@@ -8,17 +8,26 @@ import CopyIcon from './CopyIcon';
 import TrashIcon from './TrashIcon';
 import { MotionIcon } from 'motion-icons-react';
 import { v4 as uuidv4 } from 'uuid';
+import { pass } from 'three/src/nodes/display/PassNode.js';
+import { Repeat } from 'lucide-react';
 
 const Main = () => {
     const [visible, setvisible] = useState(true)
     const [form, setform] = useState({ site: "", username: "", password: "" })
     const [passwordArray, setpasswordArray] = useState([])
 
+    const getPasswords = async () => {
+        let req = await fetch("http://localhost:3000/")
+
+        let passwords = await req.json()
+        console.log(passwords)
+        setpasswordArray(passwords)
+    }
+
+
     useEffect(() => {
-        let passwords = localStorage.getItem("password")
-        if (passwords) {
-            setpasswordArray(JSON.parse(passwords))
-        }
+        getPasswords()
+
     }, [])
 
 
@@ -45,11 +54,18 @@ const Main = () => {
         setform({ ...form, [e.target.name]: e.target.value })
     }
 
-    const savePassword = () => {
+    const savePassword = async () => {
         if (form.site.length >= 3 && form.username.length >= 3 && form.password.length >= 5) {
+
+
+            // if any such id exists in the db, delete it 
+            await fetch("http://localhost:3000/", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: form.id }) })
+
             setpasswordArray([...passwordArray, { ...form, id: uuidv4() }])
-            localStorage.setItem("password", JSON.stringify([...passwordArray, { ...form, id: uuidv4() }]))
-            console.log([...passwordArray, form])
+            await fetch("http://localhost:3000/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, id: uuidv4() }) })
+            // localStorage.setItem("password", JSON.stringify([...passwordArray, { ...form, id: uuidv4() }]))
+
+            // console.log([...passwordArray, form])
             setform({ site: "", username: "", password: "" })
         }
         else {
@@ -67,18 +83,19 @@ const Main = () => {
         }
     }
 
-    const deletePassword = (id) => {
+    const deletePassword = async (id) => {
         console.log("Deleting password with id", id)
         let c = confirm("Do you really want to delete this password?")
         if (c) {
             setpasswordArray(passwordArray.filter(item => item.id != id))
-            localStorage.setItem("password", JSON.stringify(passwordArray.filter(item => item.id != id)))
+            await fetch("http://localhost:3000/", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id }) })
+            // localStorage.setItem("password", JSON.stringify(passwordArray.filter(item => item.id != id)))
         }
     }
 
     const editPassword = (id) => {
         console.log("Editing password with id", id)
-        setform(passwordArray.filter(i => i.id === id)[0])
+        setform({...passwordArray.filter(i => i.id === id)[0] , id :id})
         setpasswordArray(passwordArray.filter(item => item.id != id))
     }
     return (

@@ -32,7 +32,7 @@ const Navbar = () => {
                     />
 
                 </div>
-                <GlowingBorderButton className='p-0 sm:p-1'><a href="https://github.com/namansingla01022008-lab/passop" target='_blank' className='flex items-center gap-2'> <img src="src\assets\github.svg" alt="svg" className='text-white' /><span className='hidden sm:flex'>Github</span></a></GlowingBorderButton>
+                <GlowingBorderButton className='p-0 sm:p-1'><a href="https://github.com/namansingla01022008-lab" target='_blank' className='flex items-center gap-2'> <img src="src\assets\github.svg" alt="svg" className='text-white' /><span className='hidden sm:flex'>Github</span></a></GlowingBorderButton>
             </div>
         </nav>
     )
