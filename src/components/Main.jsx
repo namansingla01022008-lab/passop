@@ -9,7 +9,6 @@ import TrashIcon from './TrashIcon';
 import { MotionIcon } from 'motion-icons-react';
 import { v4 as uuidv4 } from 'uuid';
 
-
 const Main = () => {
     const [visible, setvisible] = useState(true)
     const [form, setform] = useState({ site: "", username: "", password: "" })
@@ -56,9 +55,9 @@ const Main = () => {
         else {
             toast.success("Error : Password didn't added", {
                 position: "top-center",
-                autoClose: 100,
+                autoClose: 1000,
                 hideProgressBar: false,
-                closeOnClick: false,
+                closeOnClick: true,
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
@@ -86,10 +85,10 @@ const Main = () => {
         <>
             <ToastContainer
                 position="top-right"
-                autoClose={5000}
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop={false}
-                closeOnClick={false}
+                closeOnClick={true}
                 rtl={false}
                 pauseOnFocusLoss
                 draggable
@@ -144,58 +143,60 @@ const Main = () => {
                     />
                     {passwordArray.length === 0 && <div className='text-white text-xl'>No Passwords to Show</div>}
                     {passwordArray.length != 0 &&
-                        <table className="table-auto w-full">
-                            <thead className='bg-green-300/20 rounded-2xl text-white text-md sm:text-xl'>
-                                <tr>
-                                    <th className='w-10 wrap-break-word'>Website</th>
-                                    <th>Username</th>
-                                    <th>Password</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {passwordArray.map((item, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td className='text-center w-10 wrap-break-word'><a href={item.site} target='_blank'>{item.site}</a></td>
-                                            <td className='text-center'>
-                                                <div className='flex items-center justify-center gap-2' onClick={() => { copyText(item.username) }}>
-                                                    {item.username}<CopyIcon
-                                                        className={"copy cursor-pointer"}
+                        <div className='overflow-x-auto'>
+                            <table className="table-auto w-full">
+                                <thead className='bg-green-300/20 rounded-2xl text-white text-md sm:text-xl'>
+                                    <tr>
+                                        <th className='w-10 wrap-break-word'>Website</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {passwordArray.map((item, index) => {
+                                        return (
+                                            <tr key={index}>
+                                                <td className='text-center w-10 wrap-break-word'><a href={item.site} target='_blank'>{item.site}</a></td>
+                                                <td className='text-center'>
+                                                    <div className='flex items-center justify-center gap-2' onClick={() => { copyText(item.username) }}>
+                                                        {item.username}<CopyIcon
+                                                            className={"copy cursor-pointer"}
+                                                            size={24}
+                                                            isHovered={true}
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td className='text-center'>
+                                                    <div className='flex items-center justify-center gap-2' onClick={() => { copyText(item.password) }}>
+                                                        {"*".repeat(item.password.length)}<CopyIcon
+                                                            className={"copy cursor-pointer"}
+                                                            size={24}
+                                                            isHovered={true}
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td className='text-center flex justify-center gap-4 cursor-pointer items-center'>
+                                                    <span onClick={() => { editPassword(item.id) }}><MotionIcon
+                                                        name="Edit"
                                                         size={24}
-                                                        isHovered={true}
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td className='text-center'>
-                                                <div className='flex items-center justify-center gap-2' onClick={() => { copyText(item.password) }}>
-                                                    {"*".repeat(item.password.length)}<CopyIcon
-                                                        className={"copy cursor-pointer"}
-                                                        size={24}
-                                                        isHovered={true}
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td className='text-center flex justify-center gap-4 cursor-pointer items-center'>
-                                                <span onClick={() => { editPassword(item.id) }}><MotionIcon
-                                                    name="Edit"
-                                                    size={24}
-                                                    animation="bounce"
-                                                    ishovered="true"
-                                                /></span>
-                                                <span onClick={() => { deletePassword(item.id) }}>
-                                                    <TrashIcon
-                                                        size={28}
-                                                        isHovered={true}
-                                                    />
-                                                </span>
+                                                        animation="bounce"
+                                                        ishovered="true"
+                                                    /></span>
+                                                    <span onClick={() => { deletePassword(item.id) }}>
+                                                        <TrashIcon
+                                                            size={28}
+                                                            isHovered={true}
+                                                        />
+                                                    </span>
 
-                                            </td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
                     }
                 </div>
 

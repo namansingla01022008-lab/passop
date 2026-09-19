@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -225,11 +225,12 @@ export default function Nebula({
   return (
     <div
       style={{
-        position: "absolute",
+        position: "fixed",
         inset: 0,
         width: "100%",
-        height: "100%",
+        height: "100vh",
         pointerEvents: "none",
+        zIndex: 0,
       }}
     >
       <Canvas
