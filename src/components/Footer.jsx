@@ -1,4 +1,5 @@
 import React from 'react'
+import heartIcon from '../assets/heart.svg'
 
 const Footer = () => {
     return (
@@ -11,7 +12,7 @@ const Footer = () => {
                     </div>
                     <div className='flex gap-1 items-center justify-center text-white font-bold'>
                         <span>Made with</span>
-                        <img src="src/assets/heart.svg"/>
+                        <img src={heartIcon} alt="heart" />
                         <span>by Naman Singla</span>
                     </div>
                 </div>
